@@ -1,0 +1,134 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum RepertoireStatus {
+  SUBMISSION
+  VOTING
+  RESULTS
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String
+  email         String   @unique
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  memberAtBands   BandMember[]
+  
+  @@map("users")
+}
+
+model Band {
+  id            String       @id @default(cuid())
+  name          String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  members       BandMember[]
+  repertoires   Repertoire[]
+
+  @@map("bands")
+}
+
+model BandMember {
+  id            String       @id @default(cuid())
+  role          String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  picks         Song[]
+  votes         Vote[]
+
+  user          User   @relation(fields: [userId], references: [id])
+  userId        String
+  band          Band   @relation(fields: [bandId], references: [id])
+  bandId        String
+
+  // Index for: "Get all members in this band"
+  @@index([bandId])
+  
+  // Index for: "Get bands this user belongs to"
+  @@index([userId])
+
+  @@unique([userId, bandId])
+  @@map("band_members")
+}
+
+model Repertoire {
+  id            String       @id @default(cuid())
+  name          String?
+  finalSize     Int @db.SmallInt
+  songsPerUser  Int @db.SmallInt
+  votesPerUser  Int @db.SmallInt
+  status        RepertoireStatus
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  band          Band   @relation(fields: [bandId], references: [id])
+  bandId        String
+  songs         Song[]
+  votes         Vote[]
+
+  @@map("repertoires")
+}
+
+model Song {
+  id            String       @id @default(cuid())
+  title         String
+  artist        String
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  pickedByMember      BandMember   @relation(fields: [pickedByMemberId], references: [id])
+  pickedByMemberId    String @map("picked_by_member_id")
+  repertoire    Repertoire @relation(fields: [repertoireId], references: [id])
+  repertoireId  String
+  votes         Vote[]
+
+  // Index for: "Get all songs in this repertoire"
+  @@index([repertoireId])
+  
+  // Index for: "Get songs picked by this member"
+  @@index([pickedByMemberId])
+  
+  // Compound index for: "Get songs in repertoire NOT picked by this member"
+  @@index([repertoireId, pickedByMemberId])
+
+  @@map("songs")
+}
+
+model Vote {
+  id            String       @id @default(cuid())
+  score         Int @db.SmallInt
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  
+  voteByMember   BandMember @relation(fields: [voteByMemberId], references: [id])
+  voteByMemberId String @map("vote_by_member_id")
+  song          Song   @relation(fields: [songId], references: [id])
+  songId        String
+  repertoire    Repertoire @relation(fields: [repertoireId], references: [id])
+  repertoireId  String
+
+  // Index for: "Get all votes for this song"
+  @@index([songId])
+  
+  // Index for: "Get all votes in this repertoire"
+  @@index([repertoireId])
+  
+  // Index for: "Get votes by this member"
+  @@index([voteByMemberId])
+
+  @@unique([voteByMemberId, songId, repertoireId])
+  @@map("votes")
+}
