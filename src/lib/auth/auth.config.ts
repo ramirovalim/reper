@@ -7,7 +7,10 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      if (isLoggedIn) return true;
+      if (isLoggedIn) {
+        Response.redirect(new URL('/', nextUrl));
+        return true;
+      }
       return false;
     },
   },
