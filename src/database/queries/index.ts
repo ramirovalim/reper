@@ -1,9 +1,8 @@
-import { createUser, getUserByEmail } from "./user";
+import { createUserQuery, getUserByEmailQuery } from './user';
 
 const userQueries = {
-  createUser,
-  getUserByEmail,
+  createUser: createUserQuery,
+  getUserByEmail: getUserByEmailQuery,
 };
 
 export default userQueries;
-  

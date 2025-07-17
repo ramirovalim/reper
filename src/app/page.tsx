@@ -1,23 +1,13 @@
 export default function Home() {
-  const user = {
-    name: "Ramiro",
-    email: "ramiro@ramiro.com"
-  };
-
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className='grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
       <header>
         <h1>Reper</h1>
-        {user ? (
-          <p>Bem vindo, {user.name}</p>
-        ) : (
-          <p>Por favor, faça login</p>
-        )}
       </header>
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+      <main className='flex flex-col gap-[32px] row-start-2 items-center sm:items-start'>
         <p>Home</p>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      <footer className='row-start-3 flex gap-[24px] flex-wrap items-center justify-center'>
         <p>Footer</p>
       </footer>
     </div>
