@@ -1,4 +1,4 @@
-import NextAuth, { type User } from 'next-auth';
+import NextAuth from 'next-auth';
 import { authConfig } from '@/lib/auth/auth.config';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
