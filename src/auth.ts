@@ -4,6 +4,7 @@ import SpotifyProvider from 'next-auth/providers/spotify';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  debug: true,
   providers: [
     SpotifyProvider({
       authorization:

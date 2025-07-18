@@ -1,4 +1,5 @@
 import { auth } from '@/auth';
+import { SignOut } from '@/components/SignOut';
 
 export default async function Home() {
   const session = await auth();
@@ -11,6 +12,7 @@ export default async function Home() {
       <main className='flex flex-col gap-[32px] row-start-2 items-center sm:items-start'>
         <p>Home</p>
         <p>{JSON.stringify(session)}</p>
+        <SignOut />
       </main>
       <footer className='row-start-3 flex gap-[24px] flex-wrap items-center justify-center'>
         <p>Footer</p>
