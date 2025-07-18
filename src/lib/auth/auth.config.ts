@@ -20,6 +20,11 @@ export const authConfig = {
       // For other pages, check if user is logged in
       return isLoggedIn;
     },
+    // Restrict access to certain users
+    async signIn({ user }) {
+      if (user?.email !== 'ramirotuk@gmail.com') return false;
+      return true;
+    },
     async redirect({ url, baseUrl }) {
       // Use ngrok URL in development
       if (process.env.NODE_ENV === 'development') {
@@ -28,6 +33,21 @@ export const authConfig = {
         if (url.startsWith(ngrokUrl)) return url;
       }
       return baseUrl;
+    },
+    async jwt({ token, account, user }) {
+      // Persist the OAuth access_token and or the user id to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Send properties to the client, like an access_token and user id from a provider.
+      session.sessionToken = token.accessToken as string;
+      session.user.id = token.id as string;
+
+      return session;
     },
   },
   providers: [],
