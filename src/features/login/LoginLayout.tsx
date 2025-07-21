@@ -1,20 +1,19 @@
-import { Suspense } from 'react';
-
 export default function LoginLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <main className='flex items-center justify-center md:h-screen'>
-      <div className='relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32'>
-        <div className='flex h-20 w-full items-end rounded-lg bg-blue-500 p-3 md:h-36'>
-          <div className='w-32 text-white md:w-36'>
-            <h2>Reper</h2>
-          </div>
-        </div>
-        <Suspense>{children}</Suspense>
+    <section className='h-svh w-svw flex flex-col items-center justify-center gap-24 bg-slate-50'>
+      <div className='px-12 text-center'>
+        <h1 className='text-4xl font-bold'>Faça login para continuar</h1>
       </div>
-    </main>
+      <main>{children}</main>
+      <footer className='text-center'>
+        <p className='fixed bottom-2 left-2 right-2 text-sm text-muted-foreground'>
+          © {new Date().getFullYear()} Reper. Todos os direitos reservados.
+        </p>
+      </footer>
+    </section>
   );
 }
