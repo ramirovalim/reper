@@ -1,12 +1,17 @@
 import { Button } from '@/components/ui/button';
-import { SignIn } from '@/components/SignIn';
+import { signIn } from '@/auth';
 
 export default function LoginPage() {
   return (
-    <div className='w-full max-w-sm'>
-      <SignIn />
-      <Button variant='outline' className='w-full'>
-        Login with Google
+    <div>
+      <Button
+        size='lg'
+        onClick={async () => {
+          'use server';
+          await signIn('spotify');
+        }}
+      >
+        Entrar com Spotify
       </Button>
     </div>
   );
