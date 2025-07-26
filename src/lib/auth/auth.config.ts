@@ -38,13 +38,15 @@ export const authConfig = {
       // Persist the OAuth access_token and or the user id to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
         token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       // Send properties to the client, like an access_token and user id from a provider.
-      session.sessionToken = token.accessToken as string;
+      session.accessToken = token.accessToken as string;
+      session.refreshToken = token.refreshToken as string;
       session.user.id = token.id as string;
 
       return session;
@@ -52,3 +54,17 @@ export const authConfig = {
   },
   providers: [],
 } satisfies NextAuthConfig;
+
+declare module 'next-auth' {
+  interface JWT {
+    accessToken: string;
+    refreshToken: string;
+    id: string;
+  }
+
+  interface Session {
+    accessToken: string;
+    refreshToken: string;
+    id: string;
+  }
+}
