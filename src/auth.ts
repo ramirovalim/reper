@@ -11,7 +11,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         url: 'https://accounts.spotify.com/authorize',
         params: {
           scope:
-            'user-read-email playlist-read-private playlist-modify-private playlist-modify-public',
+            'user-read-email playlist-read-private playlist-modify-private playlist-modify-public user-read-recently-played',
         },
       },
       clientId: process.env.SPOTIFY_CLIENT_ID,

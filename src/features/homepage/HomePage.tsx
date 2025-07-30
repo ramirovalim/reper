@@ -1,10 +1,16 @@
 import { auth } from '@/auth';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import RecentlyPlayed from '../spotify/RecentlyPlayed';
 
 export default async function HomePage() {
   const session = await auth();
-  console.log(session);
+  if(!session) {
+    console.log('Sessão não encontrada @HomePage...')
+  }
+  console.log('Session: ', session);
+
   const imageUrl = session?.user?.image;
+
   return (
     <div className='py-4 px-2'>
       <div className='flex gap-2 items-center justify-between'>
@@ -17,7 +23,9 @@ export default async function HomePage() {
         </Avatar>
       </div>
 
-      <div></div>
+      <div>
+        <RecentlyPlayed />
+      </div>
     </div>
   );
 }
