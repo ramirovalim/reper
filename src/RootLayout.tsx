@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist_Mono, Tilt_Warp } from 'next/font/google';
 import '@/globals.css';
 import { ClientProviders } from './ClientProviders';
+import { SessionProvider } from 'next-auth/react';
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body
         className={`${tiltWarp.variable} ${geistMono.variable} antialiased`}
       >
-        <ClientProviders>{children}</ClientProviders>
+        <SessionProvider>
+          <ClientProviders>{children}</ClientProviders>
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,4 +1,5 @@
 import { SignOut } from '@/components/SignOut';
+import SpotifyAvatar from './spotify/Avatar';
 
 export default function HomeLayout({
   children,
@@ -11,6 +12,7 @@ export default function HomeLayout({
         <h1 className='text-2xl font-bold'>Reper</h1>
         <SignOut />
       </header>
+      <SpotifyAvatar />
       <main>{children}</main>
     </section>
   );
